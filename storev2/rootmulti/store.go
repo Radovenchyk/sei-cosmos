@@ -107,6 +107,7 @@ func (rs *Store) Commit(bumpVersion bool) types.CommitID {
 
 	rs.mtx.Lock()
 	defer rs.mtx.Unlock()
+	fmt.Printf("[Yiming-Debug] CMS commiting version %d\n", rs.lastCommitInfo.Version)
 	for _, store := range rs.ckvStores {
 		if store.GetStoreType() != types.StoreTypeIAVL {
 			_ = store.Commit(bumpVersion)
@@ -847,7 +848,11 @@ func (rs *Store) Snapshot(height uint64, protoWriter protoio.Writer) error {
 			keySizePerStore[currentStoreName] += int64(len(item.Key))
 			valueSizePerStore[currentStoreName] += int64(len(item.Value))
 			numKeysPerStore[currentStoreName] += 1
+			if numKeysPerStore[currentStoreName]%100000 == 0 {
+				fmt.Printf("[Yiming-Debug] Exported %d items \n", numKeysPerStore[currentStoreName])
+			}
 		case string:
+			fmt.Printf("[Yiming-Debug] Start exporting module %s\n", item)
 			if err := protoWriter.WriteMsg(&snapshottypes.SnapshotItem{
 				Item: &snapshottypes.SnapshotItem_Store{
 					Store: &snapshottypes.SnapshotStoreItem{

@@ -184,6 +184,11 @@ func (m *Manager) Create(height uint64) (*types.Snapshot, error) {
 // createSnapshot do the heavy work of snapshotting after the validations of request are done
 // the produced chunks are written to the channel.
 func (m *Manager) createSnapshot(height uint64, ch chan<- io.ReadCloser) {
+	fmt.Printf("[Yiming-Debug] Creating snapshot for height %d\n", height)
+	startTime := time.Now()
+	defer func() {
+		fmt.Printf("[Yiming-Debug] Snapshot creation for height %d took %s\n", height, time.Since(startTime))
+	}()
 	streamWriter := NewStreamWriter(ch)
 	if streamWriter == nil {
 		return
