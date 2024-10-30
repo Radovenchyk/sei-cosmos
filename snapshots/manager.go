@@ -199,6 +199,7 @@ func (m *Manager) createSnapshot(height uint64, ch chan<- io.ReadCloser) {
 		streamWriter.CloseWithError(err)
 		return
 	}
+	fmt.Printf("[Yiming-Debug] Creating wasm extension snapshot for height %d\n", height)
 	for _, name := range m.sortedExtensionNames() {
 		extension := m.extensions[name]
 		// write extension metadata
