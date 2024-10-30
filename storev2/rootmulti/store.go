@@ -853,8 +853,7 @@ func (rs *Store) Snapshot(height uint64, protoWriter protoio.Writer) error {
 			}
 		case string:
 			if currentStoreName != "" {
-				fmt.Printf("[Yiming-Debug] Exported module %s took %s", currentStoreName, time.Since(lastModuleStartTime))
-
+				fmt.Printf("[Yiming-Debug] Exported module %s took %s\n", currentStoreName, time.Since(lastModuleStartTime))
 			}
 			fmt.Printf("[Yiming-Debug] Start exporting module %s\n", item)
 			if err := protoWriter.WriteMsg(&snapshottypes.SnapshotItem{
